@@ -7,10 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="SSM01" />
+        <module name="SSM02" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="SSM01" target="1.5" />
+      <module name="SSM01" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
