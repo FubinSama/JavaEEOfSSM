@@ -11,9 +11,13 @@
     <modules>
         <module>SSM01</module>
         <module>SSM02</module>
+        <module>SSM03</module>
+        <module>SSM04</module>
+        <module>SSM05</module>
     </modules>
 
     <dependencies>
+        <!--spring-core依赖于commons-logging-->
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>

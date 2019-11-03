@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--定义目标对象-->
+    <bean id="testDao" class="dynamic.jdk.TestDaoImpl" />
+    <!--创建一个切面-->
+    <bean id="myAspect1" class="spring.proxyfactorybean.MyAspect" />
+
+    <!--使用Spring代理工厂定义一个名为testDaoProxy的代理对象--> <!--请先注释掉AspcetJ的配置-->
+    <bean id="testDaoProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <!--指定代理实现的接口-->
+        <property name="proxyInterfaces" value="dynamic.jdk.TestDao" />
+        <!--指定目标对象-->
+        <property name="target" ref="testDao" />
+        <!--指定切面，织入环绕通知-->
+        <property name="interceptorNames" value="myAspect1" />
+        <!--指定代理方法，true指定CGLIB动态代理；默认为false，指定JDK动态代理-->
+        <property name="proxyTargetClass" value="true" />
+    </bean>
+
+<!--AspcetJ的配置-->
+
+    <!--&lt;!&ndash;xml配置AspectJ，实现代理&ndash;&gt;-->
+    <!--&lt;!&ndash;创建一个切面&ndash;&gt;-->
+    <!--<bean id="myAspect2" class="aspectj.xml.MyAspect" />-->
+    <!--&lt;!&ndash;AOP配置 &ndash;&gt;-->
+    <!--<aop:config>-->
+        <!--&lt;!&ndash;配置切面&ndash;&gt;-->
+        <!--<aop:aspect ref="myAspect2">-->
+            <!--&lt;!&ndash;配置切入点，通知增强哪些方法&ndash;&gt;-->
+            <!--<aop:pointcut id="myPointCut" expression="execution(* dynamic.jdk.*.*(..))" />-->
+            <!--&lt;!&ndash;将通知与切入点关联&ndash;&gt;-->
+            <!--<aop:before method="before" pointcut-ref="myPointCut" />-->
+            <!--<aop:after-returning method="afterReturning" pointcut-ref="myPointCut" />-->
+            <!--<aop:around method="around" pointcut-ref="myPointCut" />-->
+            <!--<aop:after-throwing method="except" pointcut-ref="myPointCut" throwing="e" />-->
+            <!--<aop:after method="after" pointcut-ref="myPointCut" />-->
+        <!--</aop:aspect>-->
+    <!--</aop:config>-->
+
+    <!--使用注解配置AspectJ-->
+    <!--指定需要扫描的包，使注解生效-->
+    <context:component-scan base-package="aspectj.annotation" />
+    <context:component-scan base-package="dynamic.jdk" />
+    <!--启动基于注解的AspectJ支持-->
+    <aop:aspectj-autoproxy />
+</beans>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--构造方法实例化Bean-->
+    <bean id="constructorInstance" class="instance.BeanClass" scope="singleton" />
+    <!--静态工厂实例化Bean-->
+    <bean id="staticFactoryInstance" class="instance.BeanStaticFactory" factory-method="getInstance" />
+    <!--实例工厂实例化Bean-->
+    <bean id="myFactory" class="instance.BeanInstanceFactory" />
+    <bean id="instanceFactoryInstance" factory-bean="myFactory" factory-method="createBeanClassInstance" />
+
+    <!--配置bean，使用init-method属性指定初始化方法，使用destroy-method属性指定销毁方法-->
+    <bean id="beanLife" class="life.BeanLife" init-method="initMyself" destroy-method="destroyMySelf" />
+
+
+<!--通过XML装配Bean-->
+    <!--使用构造方法注入方式装配ComplexUser实例user1-->
+    <bean id="user1" class="assemble.ComplexUser">
+        <constructor-arg index="0" value="wfb1" />
+        <constructor-arg index="1">
+            <list>
+                <value>唱歌</value>
+                <value>跳舞</value>
+                <value>爬山</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg index="2">
+            <map>
+                <entry key="dalian" value="大连" />
+                <entry key="beijing" value="北京" />
+                <entry key="shanghai" value="上海" />
+            </map>
+        </constructor-arg>
+        <constructor-arg index="3">
+            <set>
+                <value>wfb1</value>
+                <value>wfb2</value>
+                <value>wfb3</value>
+            </set>
+        </constructor-arg>
+        <constructor-arg index="4">
+            <array>
+                <value>aaa</value>
+                <value>bbb</value>
+            </array>
+        </constructor-arg>
+    </bean>
+    <!--使用setter方法注入方式装配ComplexUser实例user2-->
+    <bean id="user2" class="assemble.ComplexUser">
+        <property name="uname" value="wfb" />
+        <property name="hobbyList">
+            <list>
+                <value>唱歌</value>
+                <value>跳舞</value>
+                <value>爬山</value>
+            </list>
+        </property>
+        <property name="residenceMap">
+            <map>
+                <entry key="dalian" value="大连" />
+                <entry key="beijing" value="北京" />
+                <entry key="shanghai" value="上海" />
+            </map>
+        </property>
+        <property name="aliasSet">
+            <set>
+                <value>wfb1</value>
+                <value>wfb2</value>
+                <value>wfb3</value>
+            </set>
+        </property>
+        <property name="array">
+            <array>
+                <value>aaa</value>
+                <value>bbb</value>
+            </array>
+        </property>
+    </bean>
+<!--通过注解装配Bean-->
+    <!--通过Spring扫描指定包annotation及其子包下的所用Bean的实现类，进行注解解析。需要添加context命名空间,才能使用该标签 -->
+    <context:component-scan base-package="annotation" />
+</beans>

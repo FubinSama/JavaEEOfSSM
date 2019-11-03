@@ -8,6 +8,9 @@
         <outputRelativeToContentRoot value="true" />
         <module name="SSM01" />
         <module name="SSM02" />
+        <module name="SSM03" />
+        <module name="SSM04" />
+        <module name="SSM05" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
