@@ -11,10 +11,12 @@
         <module name="SSM03" />
         <module name="SSM04" />
         <module name="SSM05" />
+        <module name="SSM06" />
+        <module name="SSM07" />
+        <module name="SSM08" />
+        <module name="SSM09" />
+        <module name="SSM10" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="SSM01" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

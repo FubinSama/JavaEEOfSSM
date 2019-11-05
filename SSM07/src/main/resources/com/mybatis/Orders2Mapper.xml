@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.Orders2Dao">
+    <select id="selectOrdersById" parameterType="Integer" resultType="com.po.Orders2">
+        select * from orders where user_id = #{id}
+    </select>
+    <resultMap id="allOrdersAndProducts" type="com.po.Orders2">
+        <id property="id" column="id" />
+        <result property="ordersn" column="ordersn" />
+        <collection property="products" ofType="com.po.Product">
+            <id property="id" column="pid" />
+            <result property="name" column="name" />
+            <result property="price" column="price" />
+        </collection>
+    </resultMap>
+    <select id="selectAllOrdersAndProducts" resultMap="allOrdersAndProducts">
+        select o.*, p.id as pid, p.name, p.price from orders o, orders_detail od, product p
+          where od.orders_id = o.id and od.product_id = p.id
+    </select>
+</mapper>

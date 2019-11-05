@@ -36,10 +36,85 @@ wfb create it to learn SSM and Git
     * 编程式事务管理（TestCodeTransaction）
     * 声明式事务管理（XMLTest、AnnotationTest）
 6. MyBatis开发入门
-7. 映射器
-8. 动态SQL
-9. SpringMVC入门
-10. SpringMVC的Controller
+    * MyBatis整合Spring
+    * MyBatis自动生成
+7. 映射器:
+    * SQL映射文件常用配置元素：
+        * select    查询语句
+        * insert    插入语句
+        * update    更新语句
+        * delete    删除语句
+        * sql       定义一部分SQL，在多个位置被引用
+        ```xml
+        <mapper>
+          <sql id="comColumns">id, uname, usex</sql>
+          <select id="selectUser" resultType="com.po.MyUser">
+              select <include refid="comColumns" /> from user
+          </select>
+        </mapper>
+        ```
+        * resultMap 用来描述从数据库结果集中来加载对象
+        ```xml
+          <resultMap type="" id="">
+              <constructor> <!--类在实例化时用来注入结果到构造方法-->
+                  <idArg /> <!--ID参数，结果为ID-->
+                  <arg /> <!--注入到构造方法的一个普通结果-->
+              </constructor>
+              <id property="" column="" /> <!--用来表示哪个列是主键-->
+              <result property="" column="" /> <!--注入到字段或JavaBean属性的普通结果-->
+              <association property="" /> <!--用于一对一关联-->
+              <collection property="" />  <!--用于一对多、多对多关联-->
+              <discriminator javaType=""> <!--使用结果值来决定使用哪个结果映射-->
+                  <case value="" />   <!--基于某些值的结果映射-->
+              </discriminator>
+          </resultMap>
+        ```
+    * 主键：
+        * 主键回填（主键自动递增）：
+        ```xml
+        <insert id="addUser" parameterType="com.po.MyUser" keyProperty="uid" useGeneratedKeys="true">
+          insert into user(uname, usex) values(#{uname}, #{usex})
+        </insert>
+        ```
+        * 自定义主键：
+        ```xml
+        <insert id="insertUser" paramterType="com.po.MyUser">
+          <!--先使用selectKey元素定义主键，然后再定义SQL语句-->
+          <selectKey keyProperty="uid" resultType="Integer" order="BEFORE">
+              select if(max(uid) is null, 1, max(uid)+1) as newUid from user
+          </selectKey>
+          insert into user (uid, uname, usex) values (#{uid}, #{uname}, #{usex})
+        </insert>
+        ```
+    * 级联查询        
+        * 一对一(TestOneToOne)
+        * 一对多(TestOneToMore)
+        * 多对多(TestMoreToMore)
+8. 动态SQL:
+    * &lt;if&gt;元素
+    * &lt;choose&gt;元素及其子元素&lt;when&gt;和&lt;otherwise&gt;
+    * &lt;trim&gt;元素
+    * &lt;where&gt;元素
+    * &lt;set&gt;元素
+    * &lt;foreach&gt;元素
+    * &lt;bind&gt;元素
+9. SpringMVC入门:
+    * 工作原理：
+        1. 客户端请求提交DispatcherServlet
+        2. 由DispatcherServlet控制器寻找一个或多个HandlerMapping，找到处理请求的Controller
+        3. DispatcherServlet将请求提交到Controller
+        4. Controller调用业务逻辑处理后返回ModelAndView
+        5. DispatcherServlet寻找一个或多个ViewResolver视图解析器，找到ModelAndView指定的视图
+        6. 视图负责将结果显示到客户端
+    * org.springframework.web.servlet.DispatcherServlet初始化时默认在WEB-INF目录下查找一个servletName-servlet.xml配置文件   
+10. SpringMVC的Controller:
+    * @RequestMapping：可以注解类和方法，表示请求路径
+    * @PathVariable：可以获取URL中的参数
+    * @RequestParam：请求参数被该注解注解后，若请求参数与接收参数不一致，则报404错误；不加该注解不会报错。
+    * @ModelAttribute:
+        * 注解接收请求参数，相当于model.addAttribute();
+        * 注解方法，该方法会在每次调用该控制器的请求处理方法前被调用。
+    * 重定向和转发都需要符合视图解析的配置，如果转发到一个不需要DispatcherServlet的资源，则需要进行<mvc:resources />的配置
 11. 类型转换和格式化
 12. 数据绑定和表单标签库
 13. 拦截器
