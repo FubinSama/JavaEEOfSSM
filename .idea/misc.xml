@@ -4,6 +4,8 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/SSM09" />
     <file type="web" url="file://$PROJECT_DIR$/SSM10" />
+    <file type="web" url="file://$PROJECT_DIR$/SSM11" />
+    <file type="web" url="file://$PROJECT_DIR$/SSM12" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">

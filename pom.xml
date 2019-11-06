@@ -20,6 +20,8 @@
         <module>SSM09</module>
         <module>SSM09</module>
         <module>SSM10</module>
+        <module>SSM11</module>
+        <module>SSM12</module>
     </modules>
 
     <dependencies>

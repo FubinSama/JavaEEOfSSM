@@ -115,7 +115,34 @@ wfb create it to learn SSM and Git
         * 注解接收请求参数，相当于model.addAttribute();
         * 注解方法，该方法会在每次调用该控制器的请求处理方法前被调用。
     * 重定向和转发都需要符合视图解析的配置，如果转发到一个不需要DispatcherServlet的资源，则需要进行<mvc:resources />的配置
-11. 类型转换和格式化
+11. 类型转换和格式化:
+    * Converter<S,T>：类型转换器，将S类型转换成T类型。
+    * Formatter<T>：格式化转换器，完成String类型和T类型的转换。
+    * 实现步骤：
+        1. 继承相应接口，实现接口声明的方法
+        2. 配置ConversionServiceFactoryBean
+        3. <mvc:annotation-driven conversion-service="设置为步骤b配置的bean" />
+    * 配置示例：
+    ```xml
+        <beans>
+            <!-- 注册MyFormatter和GoodsConverter -->
+            <bean id="conversionService2" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+                <property name="formatters">
+                    <list>
+                        <bean class="formatter.MyFormatter" />
+                    </list>
+                </property>
+                <property name="converters">
+                    <list>
+                        <bean class="converter.GoodsConverter" />
+                    </list>
+                </property>
+            </bean>
+        
+            <mvc:annotation-driven conversion-service="conversionService2" />
+            
+        </beans>
+    ```  
 12. 数据绑定和表单标签库
 13. 拦截器
 14. 数据验证

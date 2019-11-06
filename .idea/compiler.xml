@@ -16,6 +16,8 @@
         <module name="SSM08" />
         <module name="SSM09" />
         <module name="SSM10" />
+        <module name="SSM11" />
+        <module name="SSM12" />
       </profile>
     </annotationProcessing>
   </component>
