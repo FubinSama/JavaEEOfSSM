@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <context:component-scan base-package="controller" />
+    <!--annotation-driven用于简化开发的配置，注解DefaultAnnotationHandlerMapping和AnnotationMethodHandlerAdapter-->
+    <mvc:annotation-driven />
+    <!--使用resources时必须使用annotation-driven，否则resources元素会阻止任意控制器被调用-->
+    <!--配置SpringMVC的视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="internalResourceViewResolver">
+        <!--前缀-->
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <!--后缀-->
+        <property name="suffix" value=".jsp" />
+    </bean>
+    <mvc:interceptors>
+        <bean class="interceptor.TestInterceptor" />
+        <bean class="interceptor.LoginInterceptor" />
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="interceptor.Interceptor1" />
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/gotoTest"/>
+            <bean class="interceptor.Interceptor2" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+</beans>

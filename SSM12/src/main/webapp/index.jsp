@@ -22,7 +22,7 @@
             console.log(data);
             $.ajax({
                 url: "${pageContext.request.contextPath}/testJson",
-                type: "GET",
+                type: "POST",
                 contentType: "application/json",
                 data: data,
                 dataType: "json",

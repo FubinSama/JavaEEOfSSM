@@ -143,8 +143,38 @@ wfb create it to learn SSM and Git
             
         </beans>
     ```  
-12. 数据绑定和表单标签库
-13. 拦截器
+12. 数据绑定和表单标签库：记得对tomcat进行-Dfile.encoding=UTF-8的设置，否则中文会在后台乱码
+13. 拦截器：
+    * 拦截器的定义：通过实现HandlerInterceptor接口，该接口定义的方法：
+        * preHandle：在控制器的请求方法前执行，其返回值表示是否中断后续操作，返回true表示继续向下执行，返回false表示中断后续操作。
+        * postHandle：在控制器的处理请求方法调用之后、解析视图之前执行，可以通过此方法对请求域中的模型和视图做进一步的修改。
+        * afterCompletion：在控制器的处理请求方法执行完成后执行，即视图渲染结束后执行，
+        可以通过此方法实现一些资源清理、记录日志信息等工作。
+    * 配置示例：
+    ```xml
+        <!--配置拦截器，注意各个标签的顺序-->
+        <mvc:interceptors>
+            <!--配置一个全局拦截器，拦截所有请求-->
+            <bean class="interceptor.TestInterceptor" />
+            <mvc:interceptor>
+                <!--配置拦截器作用的路径，对所有路径有效-->
+                <mvc:mapping path="/**" />
+                <!--配置不需要拦截作用的路径-->
+                <mvc:exclude-mapping path="" />
+                <!--定义在<mvc:interceptor>元素中，表示匹配指定路径的请求才进行拦截-->
+                <bean class="interceptor.Interceptor1" />
+            </mvc:interceptor>
+            <!--第二个拦截器-->
+            <mvc:interceptor>
+                <!--配置拦截器作用的路径，只对以gotoTest结尾的路径有效-->
+                <mvc:mapping path="/gotoTest" />
+                <!--配置不需要拦截作用的路径-->
+                <mvc:exclude-mapping path="" />
+                <!--定义在<mvc:interceptor>元素中，表示匹配指定路径的请求才进行拦截-->
+                <bean class="interceptor.Interceptor2" />
+            </mvc:interceptor>
+        </mvc:interceptors>
+    ``` 
 14. 数据验证
 15. 国际化
 16. 统一异常处理

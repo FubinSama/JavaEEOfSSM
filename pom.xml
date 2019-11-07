@@ -22,6 +22,7 @@
         <module>SSM10</module>
         <module>SSM11</module>
         <module>SSM12</module>
+        <module>SSM13</module>
     </modules>
 
     <dependencies>
