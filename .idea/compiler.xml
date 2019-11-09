@@ -19,6 +19,8 @@
         <module name="SSM11" />
         <module name="SSM12" />
         <module name="SSM13" />
+        <module name="SSM14" />
+        <module name="SSM15" />
       </profile>
     </annotationProcessing>
   </component>

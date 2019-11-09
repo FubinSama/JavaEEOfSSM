@@ -175,8 +175,83 @@ wfb create it to learn SSM and Git
             </mvc:interceptor>
         </mvc:interceptors>
     ``` 
-14. 数据验证
-15. 国际化
+14. 数据验证:
+    * 在SpringMVC框架中先进行数据类型转化，再进行服务器端验证。
+    * 验证输入数据的两种方式：
+        * 利用Spring自带的验证框架:
+            1. 继承Validator接口，实现supports(要验证的model，返回false则不进行验证)和validate(对该model的验证处理)方法。
+            2. 编写errorMessage.properties文件
+            3. 配置消息属性文件
+            ```xml
+              <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+                  <!-- 注意不要漏下classpath，虽然加上它IDEA会报错，但是不加会导致找不到该资源文件 -->
+                  <property name="basename" value="classpath:errorMessages" />
+              </bean>
+            ```
+        * 利用JSR303实现：
+            1. 添加hibernate validate的相关jar包，详见pom.xml。
+            2. 配置消息属性文件，注册校验器，并开启Spring的Valid功能:
+            ```xml
+              <beans>
+                  <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+                      <!-- 注意不要漏下classpath，虽然加上它IDEA会报错，但是不加会导致找不到该资源文件 -->
+                      <property name="basename" value="classpath:errorMessages" />
+                  </bean>
+                  <!--注册校验器-->
+                  <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+                      <!-- hibernate校验器 -->
+                      <property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
+                      <!-- 指定校验使用的资源文件，在文件中配置校验错误信息，
+                      如果不指定则默认使用classpath下的ValidationMessages.properties -->
+                      <property name="validationMessageSource" ref="messageSource" />
+                  </bean>
+                  <!-- 开启Spring的Vaild功能 -->
+                  <mvc:annotation-driven conversion-service="conversionService" validator="validator" />
+              </beans>
+            ```
+            3. 为pojo添加相关的验证注解
+            4. 为需要验证的模型添加@Valid注解
+15. 国际化:
+    * Java国际化：
+        * 国际化的思想：将程序中的信息放在资源文件中，程序根据支持的国家及语言环境读取相应的资源文件。
+        资源文件是key-value对，每个资源文件的key是不变的，但value随不同国家/语言变化。
+        * Java程序的国际化主要通过两个类来完成：
+            * java.util.Locale：用于提供本地信息，通常称它为语言环境，不同的语言、不同的国家和地区采用不同的Locale对象来表示。
+            * java.util.ResourceBundle：该类称为资源包，包含了特定于语言环境的资源对象。当程序需要一个特定于语言环境的资源时
+            （例如字符串资源），程序可以从适合当前用户语言环境的资源包中加载它。
+        * 资源文件的命名的三种方式(language用两个小写字母表示，country用两个大写字母表示)：
+            * baseName.properties   （最终匹配）
+            * baseName_language.properties  （次优先匹配）
+            * baseName_language_country.properties (最优先匹配)
+    * SpringMVC的三个语言区域解析器：
+        * AcceptHeaderLocaleResolver: 根据浏览器Http header中打的accpet-language域设定
+        （appcept-language域中一般都包含了当前操作系统的语言设定，可通过HttpServletRequest.getLocale()方法获得），
+        不支持改变Locale。
+        * SessionLocaleResolver: 根据用户本次会话过程中的语言设定决定语言区域
+        （例如用户进入首页时选择语言种类，则词汇话周期内统一使用该语言设定）
+        * CookieLocaleResolver: 根据Cookie判定用户的语言设定（Cookie中保存着用户前一次的语言设定参数）。
+    * 配置示例：
+    ```xml
+        <beans>
+            <!--国际化操作拦截器，如果采用基于Session/Cookie则必须配置-->
+           <mvc:interceptors>
+               <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+                   <property name="paramName" value="locale" />
+               </bean>
+           </mvc:interceptors>
+           <!--存储区域设置信息-->
+           <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+               <property name="defaultLocale" value="zh_CH" />
+           </bean>
+        </beans>
+    ```
+    * SpringMVC中可以使用message标签在JSP页面中显示国际化消息：
+        * 导入该标签：<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+        * message标签的常用属性：
+            * code：获得国际化消息的key
+            * arguments：代表该标签的参数。用来替换消息中的占位符。
+            * argumentSeparator：用来分割该标签参数的字符，默认为逗号。
+            * text：code属性不存在或指定的key无法获取消息时所显示的默认文本信息。
 16. 统一异常处理
 17. 文件的上传和下载
 18. EL与JSTL
