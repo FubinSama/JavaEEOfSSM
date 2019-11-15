@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="controller" />
+    <context:component-scan base-package="service" />
+    <context:component-scan base-package="dao" />
+
+    <!--使用resources时必须使用annotation-driven，否则resources元素会阻止任意控制器被调用-->
+    <!--配置SpringMVC的视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="internalResourceViewResolver">
+        <!--前缀-->
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <!--后缀-->
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!--配置SimpleMappingExceptionResolver-->
+    <!--<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">-->
+        <!--&lt;!&ndash;定义默认的异常处理页面，当该异常类型注册时使用&ndash;&gt;-->
+        <!--<property name="defaultErrorView" value="error" />-->
+        <!--&lt;!&ndash;定义异常处理页面用来获取异常信息的变量名，默认为exception&ndash;&gt;-->
+        <!--&lt;!&ndash;<property name="exceptionAttribute" value="ex" />&ndash;&gt;-->
+        <!--&lt;!&ndash;定义需要特殊处理的异常，用类名或完全路径名作key，异常页名作值&ndash;&gt;-->
+        <!--<property name="exceptionMappings">-->
+            <!--<props>-->
+                <!--<prop key="exception.MyException">my-error</prop>-->
+                <!--<prop key="java.sql.SQLException">sql-error</prop>-->
+            <!--</props>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--托管MyExceptionHandler-->
+    <bean class="exception.MyExceptionResolver" />
+</beans>

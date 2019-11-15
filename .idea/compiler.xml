@@ -21,6 +21,10 @@
         <module name="SSM13" />
         <module name="SSM14" />
         <module name="SSM15" />
+        <module name="SSM16" />
+        <module name="SSM17" />
+        <module name="SSM18" />
+        <module name="SSM19" />
       </profile>
     </annotationProcessing>
   </component>

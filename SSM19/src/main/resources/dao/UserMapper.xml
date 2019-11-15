@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.UserDao">
+    <select id="selectUserByUname" resultType="po.MyUser" parameterType="po.MyUser">
+        <bind name="param_uname" value="'%' + uname + '%'" />
+        select * from user
+        <where>
+            <if test="uname != null and uname != ''">
+                uname like #{param_uname}
+            </if>
+        </where>
+    </select>
+</mapper>

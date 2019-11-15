@@ -97,7 +97,7 @@
     <!--使用bind元素进行模糊查询-->
     <!--bind中的uname是com.po.MyUser的属性名-->
     <select id="selectUserByBind" resultType="com.po.MyUser" parameterType="com.po.MyUser">
-        <bind name="paran_uname" value="'%' + uname + '%'" />
-        select * from user where uname like #{paran_uname}
+        <bind name="param_uname" value="'%' + uname + '%'" />
+        select * from user where uname like #{param_uname}
     </select>
 </mapper>

@@ -25,6 +25,10 @@
         <module>SSM13</module>
         <module>SSM14</module>
         <module>SSM15</module>
+        <module>SSM16</module>
+        <module>SSM17</module>
+        <module>SSM18</module>
+        <module>SSM19</module>
     </modules>
 
     <dependencies>

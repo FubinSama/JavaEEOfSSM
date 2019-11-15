@@ -252,7 +252,30 @@ wfb create it to learn SSM and Git
             * arguments：代表该标签的参数。用来替换消息中的占位符。
             * argumentSeparator：用来分割该标签参数的字符，默认为逗号。
             * text：code属性不存在或指定的key无法获取消息时所显示的默认文本信息。
-16. 统一异常处理
+16. 统一异常处理的三种方式:
+    1. 在Spring配置文件中配置SimpleMappingExceptionResolver异常处理器统一处理。（详见配置文件已注释部分）
+    2. 利用HandlerExceptionResolver接口的实现类进行处理（编写实现类，配置文件中注册该bean）
+    3. 利用@ExceptionHandler注解进行配置。（定义BaseController，编写@ExceptionHandler注解的方法，之后控制器全部继承该基类）
 17. 文件的上传和下载
-18. EL与JSTL
+    * 文件的上传：
+        1. 导入commons-fileupload和commons-io包
+        2. 设置form的enctype="multipart/form-data"
+        3. 在SpringMVC配置文件中添加CommonsMultipartResolver实体bean
+        ```xml
+        <!--使用Spring的CommosMultipartResolver配置MultipartResolver用于文件上传-->
+        <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+            <property name="defaultEncoding" value="UTF-8" /> <!-- 请求的编码格式，默认为ISO-8859-1 -->
+            <property name="maxUploadSize" value="#{2 * 1024 * 1024 * 1024}" /> <!-- 允许上传文件的最大值，单位为字节 -->
+            <property name="uploadTempDir" value="fileUpload/temp" /> <!-- 上传文件的临时路径 -->
+        </bean>
+        ```
+    * 利用程序实现下载需要设置两个报头：
+        1. Web服务器需要告诉浏览器其所输出内容的类型不是普通文本文件或HTML文件，而是一个要保存到本地的下载文件，
+        这需要设置Content-Type的为application/x-msdownload
+        2. Web服务器希望浏览器不直接处理相应的实体内容，而是由用户选择将相应的实体内容保存到一个文件中，
+        这需要设置Content-Disposition报头。该报头指定了接收程序处理数据内容的方式，在HTTP应用中只有attachment是标准方式，
+        attachment表示要求用户干预。在attachment后面还可以指定filename参数，
+        该参数是服务器建议浏览器将实体内容保存到文件中的文件内容。
+18. EL与JSTL:
+    * EL表达式自动将null值直接解析成空字符串
 19. SSM框架整合
